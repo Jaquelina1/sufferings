@@ -1,6 +1,6 @@
 # prova1plotze
 
-A new Flutter project.
+Trabalho parte 1 realizado pela dupla Bruno Populin e Jaqueline Carvalho. FATEC - ADS
 
 ## Getting Started
 
