@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:prova1plotze/Tela4.dart';
 
@@ -107,10 +109,10 @@ class _Tela5State extends State<Tela5> {
                                 Container(
                                   width: 150,
                                   child: OutlinedButton(
-                                  onPressed: () {
-                                    Navigator.pushNamed(context, 't1');
-                                  },
-                                  child: Text('Finalizar'),
+                                    child: const Text('Criar'),
+                                    onPressed: () {
+                                      criarConta(nomecompleto.text, profissao.text, emailcadastro.text, senhacadastro.text);
+                                    },
                                   ),
                                 )
                               ]
@@ -127,4 +129,52 @@ class _Tela5State extends State<Tela5> {
       ),
     );
   }
+
+  void criarConta(nomecompleto, profissao, emailcadastro, senhacadastro){
+
+    
+    FirebaseAuth.instance.createUserWithEmailAndPassword(
+      email: emailcadastro, 
+      password: senhacadastro,
+      )
+      .then((value) {
+
+        FirebaseFirestore.instance.collection('Usuários').add({
+          'nomeCompleto'  : nomecompleto,
+          'Profissão' : profissao,
+          'E-mail'  : emailcadastro,
+          'SenhaUsuário'  : senhacadastro
+        });
+
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Usuário criado com sucesso!'),
+            duration: Duration(seconds: 2),
+            
+          )
+        );
+        Navigator.pop(context);
+      
+      }).catchError((erro){
+        if (erro.code == 'email-already-in-use') {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('ERRO: O email informado já está em uso.'),
+            duration: Duration(seconds: 2),
+          ),
+        );
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('ERRO: ${erro.message}'),
+              duration: const Duration(seconds: 2),
+            ),
+          );
+        }
+      
+      });
+    
+  }
+
 }

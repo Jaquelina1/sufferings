@@ -21,7 +21,7 @@ class _Tela2State extends State<Tela2> {
           actions: [
             Center(
               child: Padding(padding: EdgeInsets.only(right: 20), 
-                child: Text("Usuário1"))
+                child: Text(""))
             
             )
           ]
@@ -52,8 +52,8 @@ class _Tela2State extends State<Tela2> {
                ),
                ListTile(
                 leading: Icon(Icons.view_agenda),
-                title: Text("Visualizar"),
-                subtitle: Text("visualiza a agenda"),
+                title: Text("Visualizar/Editar"),
+                subtitle: Text("visualiza/Edita a agenda"),
                 trailing: Icon(Icons.arrow_forward),
                 onTap: () {
                   Navigator.pushNamed(context, 't6');

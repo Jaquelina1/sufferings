@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "951755494615",
+    "project_id": "app-maf",
+    "storage_bucket": "app-maf.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:951755494615:android:463cbabea3a67f908c8c92",
+        "android_client_info": {
+          "package_name": "com.example.prova1plotze"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "951755494615-9qec2iqgu1dgms17ljlcb9r5sovu610f.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD8Lh10QJsmTRG5lmNabas2kk-EWa7jGb8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "951755494615-9qec2iqgu1dgms17ljlcb9r5sovu610f.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

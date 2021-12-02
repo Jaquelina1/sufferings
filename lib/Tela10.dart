@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class Tela10 extends StatefulWidget {
@@ -21,7 +22,7 @@ class _Tela10State extends State<Tela10> {
         actions: [
             Center(
               child: Padding(padding: EdgeInsets.only(right: 10), 
-                child: Text("Usuário1"))
+                child: Text(""))
             )
         ],
         centerTitle: true, 
@@ -55,6 +56,11 @@ class _Tela10State extends State<Tela10> {
                         ElevatedButton (
                           child: Text('Enviar'),
                           onPressed: () {
+                            
+                            FirebaseFirestore.instance.collection('Mensagem').add({
+                            'Mensagem'  : mensagem.text
+                            });
+
                           Navigator.pushNamed(context, 't11');
                           }
                         ),

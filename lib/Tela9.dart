@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class Tela9 extends StatefulWidget {
@@ -9,15 +10,7 @@ class Tela9 extends StatefulWidget {
 
 class _Tela9State extends State<Tela9> {
   
-  var lista = [];
-
   var txtTarefa = TextEditingController();
-
-  @override
-  void initState() {
-    
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +20,7 @@ class _Tela9State extends State<Tela9> {
         actions: [
             Center(
               child: Padding(padding: EdgeInsets.only(right: 10), 
-                child: Text("Usuário1"))
+                child: Text(""))
             )
         ],
         centerTitle: true,
@@ -35,44 +28,7 @@ class _Tela9State extends State<Tela9> {
         
       ),
 
-      body: Container(
-        padding: EdgeInsets.all(30),
-        color: Colors.grey.shade200,
-        child: 
-        ListView.builder(
-
-          scrollDirection: Axis.vertical,
-
-          itemCount: lista.length,
-
-          itemBuilder: (context, index) {
-            return Card(
-              elevation: 10,
-              shadowColor: Colors.blue.shade200,
-              child: ListTile(
-
-                title: Text(
-                  lista[index],
-                  style: TextStyle(fontSize: 22),
-                ),
-
-                subtitle: Text(
-                    'Tarefa x - Fazer x'),
-
-                
-                //selecionar item da lista
-                hoverColor: Colors.blue.shade100,
-                onTap: () {
-                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                    content: Text('Tarefa selecionada: ${lista[index]}'),
-                    duration: Duration(seconds: 2),
-                  ));
-                },
-              ),
-            );
-          },
-        ),
-      ),
+      
 
       floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
       floatingActionButton: FloatingActionButton(
@@ -99,21 +55,16 @@ class _Tela9State extends State<Tela9> {
                     TextButton(
                       child: Text('ok'),
                       onPressed: () {
-                        setState(() {
-                          var msg = '';
-                          if (txtTarefa.text.isNotEmpty) {
-                            lista.add(txtTarefa.text);
-                            txtTarefa.clear();
-                            msg = 'Tarefa adicionada com sucesso.';
-                          } else {
-                            msg = 'A descrição da tarefa não pode ser vazia.';
-                          }
-
-                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                            content: Text(msg),
-                            duration: Duration(seconds: 2),
-                          ));
+                        FirebaseFirestore.instance.collection('Tarefa').add({
+                            'nomeTarefa'  : txtTarefa.text
                         });
+
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            content: Text('Tarefa adicionada com sucesso!'),
+                            duration: Duration(seconds: 2),
+                        ));
+
+                        
 
                         Navigator.pop(context);
                       },

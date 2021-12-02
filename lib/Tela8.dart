@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class Tela8 extends StatefulWidget {
@@ -13,24 +14,53 @@ class _Tela8State extends State<Tela8> {
 
   var txtTarefa = TextEditingController();
 
-  @override
-  void initState() {
-    lista.add("Tarefa 1");
-    lista.add("Tarefa 2");
-    lista.add("Tarefa 3");
+  Widget listaTarefa(item) {
+    String nomeTarefa = item.data()['nomeTarefa'];
 
-    super.initState();
+    return Card(
+              elevation: 10,
+              shadowColor: Colors.blue.shade200,
+              child: ListTile(
+
+                title: Text(
+                  nomeTarefa,
+                  style: TextStyle(fontSize: 22),
+                ),
+
+                trailing: IconButton(
+                  icon: Icon(Icons.delete_outline),
+                  onPressed: () {
+
+                    FirebaseFirestore.instance.collection('Tarefa').doc(item.id).delete();
+
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                        content: Text('Tarefa removida com sucesso'),
+                        duration: Duration(seconds: 2),
+                    ));
+                  },
+                ),
+
+                
+                hoverColor: Colors.blue.shade100,
+                onTap: () {
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    content: Text('Tarefa selecionada: '),
+                    duration: Duration(seconds: 2),
+                  ));
+                },
+              ),
+            );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Remover Tarefas'),
+        title: Text('Lista de Tarefas'),
         actions: [
             Center(
               child: Padding(padding: EdgeInsets.only(right: 10), 
-                child: Text("Usuário1"))
+                child: Text(""))
             )
         ],
         centerTitle: true,
@@ -43,53 +73,39 @@ class _Tela8State extends State<Tela8> {
         color: Colors.grey.shade200,
 
         child: 
-        ListView.builder(
-          scrollDirection: Axis.vertical,
+        
+        StreamBuilder<QuerySnapshot>(
 
-          itemCount: lista.length,
+        //fonte de dados (coleção)
+        stream: FirebaseFirestore.instance.collection('Tarefa').snapshots(),
 
-          itemBuilder: (context, index) {
-            return Card(
-              elevation: 10,
-              shadowColor: Colors.blue.shade200,
-              child: ListTile(
+        //exibir os dados retornados
+        builder: (context, snapshot){
 
-                title: Text(
-                  lista[index],
-                  style: TextStyle(fontSize: 22),
-                ),
+          switch(snapshot.connectionState){
 
-                subtitle: Text(
-                    'Tarefa x - Fazer x'),
+            case ConnectionState.none:
+              return const Center(child:Text('Não foi possível conectar ao Firebase'));
 
-                trailing: IconButton(
-                  icon: Icon(Icons.delete_outline),
-                  onPressed: () {
-                    setState(() {
-                      lista.removeAt(index);
-                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                        content: Text('Tarefa removida com sucesso'),
-                        duration: Duration(seconds: 2),
-                      ));
-                    });
-                  },
-                ),
+            case ConnectionState.waiting:
+              return const Center(child: CircularProgressIndicator());
 
-                hoverColor: Colors.blue.shade100,
-                onTap: () {
-                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                    content: Text('Tarefa selecionada: ${lista[index]}'),
-                    duration: Duration(seconds: 2),
-                  ));
-                },
-              ),
-            );
-          },
-        ),
+            //dados recebidos
+            default: 
+              final dados = snapshot.requireData;
+              return ListView.builder(
+                itemCount: dados.size,
+                itemBuilder: (context,index){
+                  return listaTarefa(dados.docs[index]);
+                }
+              );
+
+          }
+        }
+
+      ),
       ),
 
     );
   }
-  
-  
 }

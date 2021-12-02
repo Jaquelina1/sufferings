@@ -12,7 +12,7 @@ class Tela7 extends StatelessWidget {
                 Center(
                     child: Padding(
                         padding: EdgeInsets.only(right: 10),
-                        child: Text("Usuário1")))
+                        child: Text("")))
               ],
               centerTitle: true,
             ),

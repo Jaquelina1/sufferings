@@ -11,7 +11,7 @@ class Tela3 extends StatelessWidget {
         actions: [
             Center(
               child: Padding(padding: EdgeInsets.only(right: 10), 
-                child: Text("Usuário1"))          
+                child: Text(""))          
             )
           ],
         centerTitle: true,
